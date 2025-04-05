@@ -41,6 +41,14 @@ app.get("/", (req, res) => {
   res.render("books/new");
 });
 
+app.get("/edit", (req, res) => {
+  res.render("books/edit");
+});
+
+app.get("/index", (req, res) => {
+  res.render("books/index");
+});
+
 app.get("/books", async (req, res) => {
   const books = await Book.find();
   res.render("books/index", { books });
