@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Book List</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body class="container mt-4">
+    <h2>All Books</h2>
+    <a href="/books/new" class="btn btn-primary mb-3">Add New Book</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Genre</th>
+                <th>Published Year</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% books.forEach(book => { %>
+                <tr>
+                    <td><%= book.title %></td>
+                    <td><%= book.author %></td>
+                    <td><%= book.genre %></td>
+                    <td><%= book.publishedYear %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+    <form action="/books" method="GET" class="mb-3">
+        <input type="text" name="search" placeholder="Search by Title" class="form-control">
+        <button type="submit" class="btn btn-secondary mt-2">Search</button>
+    </form>
+    
+</body>
+</html>
