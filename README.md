@@ -7,6 +7,11 @@ npm init -y,
 
 npm install express mongoose body-parser method-override
 
+
+ # 🚀 then:to run this app commands
+Make sure MongoDB is running locally, then
+node server.js
+
 # 📚 Library Books App
 
 A simple Express.js app to manage a collection of books. Users can add, view, edit, and delete books using a MongoDB backend and EJS for templating.
