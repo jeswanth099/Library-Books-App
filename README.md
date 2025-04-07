@@ -31,7 +31,7 @@ Visit http://localhost:3000/books/new to add a new book.
 
 ## 🏗️ Project Status
 
-✅ HTML/CSS for basic styling 
+✅ HTML/CSS for basic styling ,
 ✅ Views rendered with EJS templates 
 🚧 Search/filter feature (in progress)
 ❌ Connected to local MongoDB using Mongoose 
