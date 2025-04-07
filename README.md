@@ -32,13 +32,21 @@ Visit http://localhost:3000/books/new to add a new book.
 ## 🏗️ Project Status
 
 ✅ HTML/CSS for basic styling ,
-✅ Views rendered with EJS templates 
+
+✅ Views rendered with EJS templates
+
 🚧 Search/filter feature (in progress)
+
 ❌ Connected to local MongoDB using Mongoose 
 
 
 💡 TODO / Stretch Goals
-Add search and filter functionality
-To slove Error in Connecting to local MongoDB using Mongoose
-Add pagination
-Improve UI 
+
+-To slove Error in Connecting to local MongoDB using Mongoose
+
+-Add search and filter functionality
+
+-Add pagination
+
+-Improve UI 
+
