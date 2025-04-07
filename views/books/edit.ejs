@@ -6,14 +6,14 @@
 </head>
 <body class="container mt-4">
     <h2>Edit Book</h2>
-    <form action="/books/<%= book._id %>?_method=PUT" method="POST">
+    <form>
         <div class="mb-3">
             <label class="form-label">Title</label>
-            <input type="text" name="title" class="form-control" value="<%= book.title %>" required>
+            <input type="text" name="title" >
         </div>
         <div class="mb-3">
             <label class="form-label">Author</label>
-            <input type="text" name="author" class="form-control" value="<%= book.author %>" required>
+            <input type="text" name="author">
         </div>
         <button type="submit" class="btn btn-primary">Update Book</button>
     </form>
