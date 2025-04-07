@@ -9,8 +9,9 @@ npm install express mongoose body-parser method-override
 
 
  # 🚀 then:to run this app commands
-Make sure MongoDB is running locally, then
+mongod
 node server.js
+
 
 # 📚 Library Books App
 
