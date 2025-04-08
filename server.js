@@ -9,10 +9,15 @@ const path = require('path');
 
 const app = express();
 
+const connectDB = async () => {
+  await mongoose.connect("mongodb://localhost:27017/bookDB", () => {
+  console.log('connected to db');
+  });
+  };
 // Database Connection
-mongoose.connect('mongodb://localhost:27017/bookDB')
+/*mongoose.connect('mongodb://localhost:27017/bookDB')
   .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+  .catch((err) => console.error("MongoDB connection error:", err));*/
 
 
 // Middleware
@@ -48,6 +53,7 @@ app.get("/edit", (req, res) => {
 app.get("/index", (req, res) => {
   res.render("books/index");
 });
+
 
 app.get("/books", async (req, res) => {
   const books = await Book.find();
@@ -90,3 +96,4 @@ app.get("/books/:id/edit", async (req, res) => {
   
 
 // Start Server
+app.listen(3000, () => console.log("Server running on http://localhost:3000"));
