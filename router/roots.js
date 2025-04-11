@@ -3,92 +3,90 @@ const router = express.Router();
 const Book = require("../models/book");
 const mongoose = require("mongoose");
 const { isLoggedIn } = require("../middleware/auth");
-const bcrypt = require('bcrypt');
+
 router.get("/", (req, res) => {
-  res.render("books/new");
+  res.render("books/home");
 });
 
-//search books
-router.get("/books",isLoggedIn, async (req, res) => {
+// Search books (user-specific)
+router.get("/books", isLoggedIn, async (req, res) => {
   const searchQuery = req.query.search || "";
-  const books = await Book.find({ title: new RegExp(searchQuery, "i") });
+  const books = await Book.find({
+    userId: req.session.userId,
+    title: new RegExp(searchQuery, "i")
+  });
   res.render("books/index", { books, searchQuery });
 });
 
-router.get("/books/new",isLoggedIn, (req, res) => {
+// New book form
+router.get("/books/new", isLoggedIn, (req, res) => {
   res.render("books/new");
 });
 
-router.post("/books",isLoggedIn, async (req, res) => {
-  await Book.create(req.body);
-  res.redirect("books");
+// Add new book (user-specific)
+router.post("/books", isLoggedIn, async (req, res) => {
+  await Book.create({ ...req.body, userId: req.session.userId });
+  res.redirect("/books");
 });
 
-// Edit Book Form
-router.get('/:id/edit',isLoggedIn, async (req, res) => {
-    try {
-        const book = await Book.findById(req.params.id);
-        if (!book) {
-            return res.status(404).send('Book not found');
-        }
-        res.render('books/edit', { book }); // ← pass the book here!
-    } catch (err) {
-        res.status(500).send('Server error');
-    }
-});
-  
-  // Update Book
-
-router.post("/books/:id/edit", isLoggedIn,async (req, res) => {
-    const { id } = req.params;
-    console.log("Book ID:", id); // Debugging
-    // Validate the ID
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).send("Invalid Book ID");
-    }
-
-    const { title, author, genre, publishedYear } = req.body;
-
-    try {
-        // Ensure all fields are provided
-        if (!title || !author || !genre || !publishedYear) {
-            return res.status(400).send("All fields are required");
-        }
-
-        // Find the book by ID and update it
-        const updatedBook = await Book.findByIdAndUpdate(
-            id,
-            { title, author, genre, publishedYear },
-            { new: true, runValidators: true }
-        );
-
-        if (!updatedBook) {
-            return res.status(404).send("Book not found");
-        }
-
-        // Redirect to the book details page
-        res.redirect(`/books`);
-    } catch (err) {
-        console.error("Error updating book:", err);
-        res.status(500).send("Internal Server Error");
-    }
+// Edit book form (check ownership)
+router.get("/:id/edit", isLoggedIn, async (req, res) => {
+  try {
+    const book = await Book.findOne({ _id: req.params.id, userId: req.session.userId });
+    if (!book) return res.status(404).send("Book not found or access denied");
+    res.render("books/edit", { book });
+  } catch (err) {
+    res.status(500).send("Server error");
+  }
 });
 
-  
-  
-  // Delete Book
-  router.delete("/:id", isLoggedIn,async (req, res) => {
-    try {
-      await Book.findByIdAndDelete(req.params.id);
-      res.redirect("/books");
-    } catch (err) {
-      res.status(500).send("Delete failed");
-    }
-  });
+// Update book (check ownership)
+router.post("/books/:id/edit", isLoggedIn, async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) return res.status(400).send("Invalid Book ID");
 
-  
+  const { title, author, genre, publishedYear } = req.body;
 
-  
-  
-  
+  try {
+    const updatedBook = await Book.findOneAndUpdate(
+      { _id: id, userId: req.session.userId },
+      { title, author, genre, publishedYear },
+      { new: true, runValidators: true }
+    );
+    if (!updatedBook) return res.status(404).send("Book not found or access denied");
+    res.redirect("/books");
+  } catch (err) {
+    console.error("Error updating book:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// Delete book (check ownership)
+router.delete("/:id", isLoggedIn, async (req, res) => {
+  try {
+    const deleted = await Book.findOneAndDelete({ _id: req.params.id, userId: req.session.userId });
+    if (!deleted) return res.status(404).send("Book not found or access denied");
+    res.redirect("/books");
+  } catch (err) {
+    res.status(500).send("Delete failed");
+  }
+});
+
+// Dashboard route
+router.get("/dashboard", isLoggedIn, async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const books = await Book.find({ userId });
+
+    res.render("books/dashboard", {
+      user: req.session.username,
+      bookCount: books.length,
+      recentBooks: books.slice(-5).reverse() // Get the 5 most recent
+    });
+  } catch (err) {
+    res.status(500).send("Error loading dashboard");
+  }
+});
+
 module.exports = router;
+
