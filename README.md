@@ -27,6 +27,22 @@ A simple Express.js app to manage a collection of books. Users can add, view, ed
 - Styled with basic CSS.
 - Built-in search or filter (optional feature).
 
+- Attach userId when creating a book
+
+-Filter books by the logged-in user's userId
+
+-Ensure only the book's owner can edit/delete it
+
+## Technologies Used
+
+- Node.js
+- Express.js
+- MongoDB with Mongoose
+- EJS templating engine
+- Bootstrap 5 (for styling)
+- bcrypt (for password hashing)
+- express-session (for session management)
+- method-override (for supporting PUT/DELETE methods)
 
 🧪 Usage
 Make sure MongoDB is running locally, then
@@ -34,6 +50,8 @@ node server.js
 
 Visit http://localhost:3000/books to view the book list.
 Visit http://localhost:3000/books/new to add a new book.
+
+
 
 ## 🏗️ Project Status
 
