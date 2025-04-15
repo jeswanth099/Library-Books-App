@@ -7,17 +7,20 @@
 </head>
 <body class="container mt-4">
 
+    <!-- Include the navbar -->
+    <%- include('../partials/navbar') %
+    
     <h2 class="mb-4">All Books</h2>
 
     <!-- Search form -->
     <form action="/books" method="GET" class="mb-4 d-flex gap-2">
-        <input type="text" name="search" placeholder="Search by Title" class="form-control" />
+        <input type="text" name="search" placeholder="Search by Title" value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"class="form-control" />
         <button type="submit" class="btn btn-secondary">Search</button>
     </form>
 
     <!-- Add new book button -->
     <a href="/books/new" class="btn btn-primary mb-3">Add New Book</a>
-    <button href="/books/edit" class="btn btn-primary mb-3">Edit Book</button>
+    
 
     <!-- Book table -->
     <table class="table table-bordered">
@@ -39,10 +42,11 @@
                         <td><%= book.genre %></td>
                         <td><%= book.publishedYear %></td>
                         <td>
+                            <!-- ✅ Use relative paths here -->
                             <a href="<%= book._id %>/edit" class="btn btn-sm btn-warning">Edit</a>
                             <form action="<%= book._id %>?_method=DELETE" method="POST" class="d-inline">
                                 <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
+                              </form>
                         </td>
                     </tr>
                 <% }) %>
