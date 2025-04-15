@@ -4,33 +4,173 @@
   <meta charset="UTF-8">
   <title>Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="container mt-4">
 
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f9f9f9;
+    }
+
+    .full-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav.navbar {
+      width: 100%;
+    }
+
+    .content-wrapper {
+      flex: 1;
+      padding: 30px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .alert-info {
+      background-color: #e7f3fe;
+      border-color: #bee5eb;
+      color: #0c5460;
+    }
+
+    form input[type="text"] {
+      max-width: 300px;
+    }
+
+    .list-group-item {
+      background-color: #fff;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .btn-primary {
+      background-color: #0d6efd;
+      border: none;
+    }
+
+    .btn-secondary {
+      background-color: #6c757d;
+      border: none;
+    }
+
+    table {
+      background-color: #ffffff;
+    }
+
+    table img {
+      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 768px) {
+      .table {
+        font-size: 0.9rem;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .form-control {
+        width: 100% !important;
+      }
+
+      .d-flex {
+        flex-direction: column;
+      }
+
+      .d-flex > * {
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body class="full-page">
+  <!-- Full-width Navbar -->
   <%- include('../partials/navbar') %>
 
-  <h2>Welcome, <%= user %>!</h2>
+  <!-- Flash alerts -->
+  <%- include('../layout') %>
 
-  <div class="alert alert-info mt-3">
-    You have <strong><%= bookCount %></strong> book<%= bookCount !== 1 ? 's' : '' %> in your library.
-  </div>
-
-  <div class="mt-4 d-flex gap-2">
-    <a href="/books" class="btn btn-primary">View All Books</a>
-    <a href="/books/new" class="btn btn-success">Add a New Book</a>
-  </div>
-
-  <% if (recentBooks.length > 0) { %>
+  <!-- Main content -->
+  <div class="content-wrapper container-fluid">
+    <h1>Welcome, <%= currentUser %>!</h1>
     <hr>
-    <h4 class="mt-4">Your Recent Books</h4>
-    <ul class="list-group">
-      <% recentBooks.forEach(book => { %>
-        <li class="list-group-item">
-          <strong><%= book.title %></strong> by <%= book.author %> — <%= book.genre %> (<%= book.publishedYear %>)
-        </li>
-      <% }) %>
-    </ul>
-  <% } %>
 
+    <div class="alert alert-info mt-3">
+      You have <strong><%= bookCount %></strong> book<%= bookCount !== 1 ? 's' : '' %> in your library.
+    </div>
+
+    <form action="/booke" method="GET" class="mb-4 d-flex gap-2">
+      <input
+        type="text"
+        name="search"
+        placeholder="Search by Title"
+        value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>"
+        class="form-control"
+      />
+      <button type="submit" class="btn btn-secondary">Search</button>
+    </form>
+
+    <% if (recentBooks.length > 0) { %>
+      <h4 class="mt-4">Your Recent Rental Books</h4>
+      <ul class="list-group mb-4">
+        <% recentBooks.forEach(book => { %>
+          <li class="list-group-item">
+            <strong><%= book.title %></strong> by <%= book.author %> — <%= book.genre %> (<%= book.publishedYear %>)
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+
+    <a href="/books" class="btn btn-primary mb-3">Rental New Book</a>
+
+    <table class="table table-bordered">
+      <thead class="table-dark">
+        <tr>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Genre</th>
+          <th>Published Year</th>
+          <th>Cover</th>
+          <th>Rental Date</th>
+          <th>Due Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (books && books.length > 0) { %>
+          <% books.forEach(book => { %>
+            <tr>
+              <td><%= book.title %></td>
+              <td><%= book.author %></td>
+              <td><%= book.genre %></td>
+              <td><%= book.publishedYear %></td>
+              <td>
+                <% if (book.coverImage) { %>
+                  <img src="<%= book.coverImage %>" alt="Cover" style="width: 60px; height: auto;" />
+                <% } else { %>
+                  No image
+                <% } %>
+              </td>
+              <td><%= book.date ? new Date(book.date).toLocaleDateString() : "N/A" %></td>
+              <td><%= book.dueDate ? new Date(book.dueDate).toLocaleDateString() : "N/A" %></td>
+            </tr>
+          <% }) %>
+        <% } else { %>
+          <tr>
+            <td colspan="7" class="text-center">No books found.</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
 </body>
 </html>
