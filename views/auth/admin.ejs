@@ -3,11 +3,6 @@
 <head>
   <title>Login</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head><!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Login</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
   <style>
     body {
@@ -50,10 +45,10 @@
   <!-- Flash alerts or layout content -->
   <%- include('../layout') %>
 
-  <!-- Login Form -->
+  <!-- Admin Form -->
   <div class="form-container">
-    <h2>Login</h2>
-    <form action="/login" method="POST">
+    <h2>Admin Login</h2>
+    <form action="/Admin" method="POST">
       <div class="mb-3">
         <label class="form-label">Username</label>
         <input type="text" name="username" class="form-control" required />
@@ -63,9 +58,7 @@
         <input type="password" name="password" class="form-control" required />
       </div>
       <button type="submit" class="btn btn-success w-100">Login</button>
-      <div class="text-center mt-3">
-        <a href="/register" class="btn btn-link">Don't have an account? Register</a>
-      </div>
+      
     </form>
   </div>
 
@@ -73,23 +66,3 @@
 </body>
 </html>
 
-
-<body class="container mt-4">
-  <%- include('../partials/navbar') %>
-
-
-  <h2>Login</h2>
-  <form action="/login" method="POST">
-    <div class="mb-3">
-      <label class="form-label">Username</label>
-      <input type="text" name="username" class="form-control" required />
-    </div>
-    <div class="mb-3">
-      <label class="form-label">Password</label>
-      <input type="password" name="password" class="form-control" required />
-    </div>
-    <button type="submit" class="btn btn-success">Login</button>
-    <a href="/register" class="btn btn-link">Don't have an account? Register</a>
-  </form>
-</body>
-</html>

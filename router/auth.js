@@ -1,15 +1,18 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
+const isAdmin = require("../models/admin");
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
 
 // Show register form
 router.get("/register", (req, res) => {
+
   res.render("auth/register");
 });
 
 // Register user
+
 router.post("/register", async (req, res) => {
     const { username, password } = req.body;
 
@@ -38,25 +41,80 @@ router.get("/login", (req, res) => {
   res.render("auth/login");
 });
 
+router.get("/admin", (req, res) => {
+    res.render("auth/admin");
+  });
+  
 // Log in user
 router.post("/login", async (req, res) => {
+    const { username, password } = req.body;
+
+    try {
+        const user = await User.findOne({ username });
+        if (!user || !(await user.comparePassword(password))) {
+            req.flash("error", "Invalid username or password");
+            return res.redirect("/login");
+        }
+
+        req.session.userId = user._id;
+        req.session.username = user.username;
+        req.user = user; // Attach the user object to the request
+        req.flash("success", "Logged in successfully");
+        res.redirect("/dashboard");
+    } catch (err) {
+        console.error("Error logging in:", err);
+        req.flash("error", "An error occurred during login");
+        res.redirect("/login");
+    }
+});
+// admin
+
+router.post("/admin", async (req, res) => {
   const { username, password } = req.body;
-  const user = await User.findOne({ username });
-  if (user && await user.comparePassword(password)) {
-    req.session.userId = user._id;
-    res.redirect("/books");
-  } else {
-    res.status(400).send("Invalid credentials");
+
+  try {
+          
+         const user = await Admin.findOne({ username });
+         if (!user || !(await user.comparePassword(password))) {
+          req.flash("error", "Invalid username or password");
+          return res.redirect("/login");
+      }
+
+      req.session.userId = user._id;
+      req.session.username = user.username;
+      req.user = user; // Attach the user object to the request
+      req.flash("success", "Logged in successfully");
+      res.redirect("/books/new");
+  } catch (err) {
+      console.error("Error logging in:", err);
+      req.flash("error", "An error occurred during login");
+      res.redirect("/books/new");
   }
 });
 
-// Logout
+router.get("/admin/index", isAdmin, (req, res) => {
+    res.render("/books/new"); // Render the index.ejs file
+});
+
+// Logout Route
+router.get("/logout", (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Error destroying session:", err);
+            return res.redirect("/dashboard");
+        }
+        res.redirect("/login");
+    });
+});
+
 router.post("/logout", (req, res) => {
-  req.session.destroy(() => {
-    res.clearCookie("connect.sid");
-    req.flash("success", "You have logged out.");
-    res.redirect("/login");
-  });
+    req.session.destroy((err) => {
+        if (err) {
+            console.error("Error destroying session:", err);
+            return res.redirect("/dashboard");
+        }
+        res.redirect("/login");
+    });
 });
 
 // Delete account

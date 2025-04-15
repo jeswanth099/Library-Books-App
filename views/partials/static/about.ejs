@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Library Info</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #6a11cb, #2575fc);
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    section {
+      background-color: rgba(255, 255, 255, 0.95);
+      color: #333;
+      border-radius: 16px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    section:hover {
+      transform: scale(1.01);
+    }
+
+    h1, h2 {
+      color: #2575fc;
+      margin-bottom: 20px;
+    }
+
+    p, ol {
+      font-size: 1.1rem;
+      line-height: 1.7;
+    }
+
+    .btn-primary {
+      background-color: #2575fc;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-weight: bold;
+      border-radius: 30px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    .btn-primary:hover {
+      background-color: #6a11cb;
+    }
+
+    iframe {
+      width: 100%;
+      height: 450px;
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    ol.list-group-numbered {
+      list-style-position: inside;
+      padding-left: 1rem;
+    }
+
+    li.list-group-item {
+      background: none;
+      border: none;
+      padding: 8px 0;
+    }
+
+    @media (max-width: 768px) {
+      section {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <%- include('../partials/navbar') %>
+
+  <div class="container">
+
+    <!-- About -->
+    <section>
+      <h1>📘 About Our Library</h1>
+      <p>This app allows you to rent and manage your personal library efficiently!</p>
+    </section>
+
+    <!-- How to Use -->
+    <section>
+      <h2>📗 How to Use the Library</h2>
+      <ol class="list-group list-group-numbered">
+        <li class="list-group-item">Register or login.</li>
+        <li class="list-group-item">Add books to your library.</li>
+        <li class="list-group-item">Rent books and manage due dates.</li>
+      </ol>
+    </section>
+
+    <!-- Membership -->
+    <section>
+      <h2>📙 Become a Member</h2>
+      <p>Enjoy unlimited rentals, access to exclusive content, and more.</p>
+      <a href="/register" class="btn btn-primary">Sign Up Now</a>
+    </section>
+
+    <!-- Location -->
+    <section>
+      <h2>📍 Our Library Location</h2>
+      
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1942.8461420647855!2d80.06233408866493!3d13.118669959013534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a528913b9bcb215%3A0x55cc19de5bdc172c!2zUGF0dGFiaXJhbSBMaWJyYXJ5L-CuquCun-CvjeCun-CuvuCuquCuv-CusOCuvuCuruCvjSDgrpXgrr_grrPgr4gg4K6o4K-C4K6y4K6V4K6u4K-N!5e0!3m2!1sen!2sin!4v1744694373327!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </section>
+
+  </div>
+</body>
+</html>
